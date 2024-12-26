@@ -22,7 +22,7 @@ class Account:
         self.balance = balance
         self.previous_hash = previous_hash
         self.hash: str = self.compute_hash()
-        self.transactions: List = self.createGenesisTransaction()
+        self.transactions: List = []
 
     def deposit(self, amount: int) -> int:
         self.balance += amount
@@ -44,11 +44,6 @@ class Account:
         )
 
         return calculatedHash
-
-    @staticmethod
-    def createGenesisTransaction():
-        genesis_transaction = Transaction(0, 0, 0)
-        return [genesis_transaction]
 
     def getAccountNumber(self) -> str:
         return self.account_number

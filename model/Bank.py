@@ -39,7 +39,7 @@ class Bank:
                 return str(new_num)
 
     def loan(self, account_number: str, amount: int, private_key, public_key):
-        if self.can_loan_amount > amount:
+        if self.can_loan_amount >= amount:
             for account in self.accounts:
                 if account.getAccountNumber() == account_number:
                     transaction = Transaction(
