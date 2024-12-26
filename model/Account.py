@@ -40,7 +40,7 @@ class Account:
 
     def compute_hash(self) -> str:
         calculatedHash = apply_sha256(
-            self.account_number + self.name + self.previous_hash
+            str(self.account_number) + self.name + self.previous_hash
         )
 
         return calculatedHash
@@ -57,6 +57,9 @@ class Account:
 
     def getAccountBalance(self) -> int:
         return self.balance
+
+    def getLatestTransaction(self) -> Transaction:
+        return self.transactions[-1]
 
     def setPreviousHash(self, previous_hash: str):
         self.previous_hash = previous_hash

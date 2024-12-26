@@ -1,5 +1,6 @@
 import json
 from model.Account import Account
+from model.Transaction import Transaction
 from typing import List
 import random
 import string
@@ -31,20 +32,29 @@ class Bank:
                 )
             )
 
-    def createRandomNum(self) -> int:
+    def createRandomNum(self) -> str:
         while True:
-            new_num = int(''.join(random.choices(string.digits, k=10)))
+            new_num = ''.join(random.choices(string.digits, k=10))
             if not any(account.account_number == new_num for account in self.accounts):
-                return new_num
+                return str(new_num)
 
-    def loan(self, account_number: str, amount: int):
+    def loan(self, account_number: str, amount: int, private_key, public_key):
         if self.can_loan_amount > amount:
-            self.can_loan_amount -= amount
-            self.asset -= amount
             for account in self.accounts:
                 if account.getAccountNumber() == account_number:
-                    account.balance += amount
-                    print(f"The loan has been approved. Now your balance: {format(account.balance, ',')} {self.currency_unit}")
+                    transaction = Transaction(self.name, str(account_number), amount, account.getLatestTransaction().hash)
+                    transaction.generateSignature(private_key)
+                    if not transaction.verifySignature(public_key):
+                        print("Invalid transaction signature.")
+                        return
+                    else:
+                        account.transactions.append(transaction)
+                        self.can_loan_amount -= amount
+                        self.asset -= amount
+                        account.balance += amount
+                        print(f"The loan has been approved. Now your balance: {format(account.balance, ',')} {self.currency_unit}")
+                        for tran in account.transactions:
+                            print(tran.__dict__)
         else:
             print("The loan amount exceeds the loanable amount.")
 

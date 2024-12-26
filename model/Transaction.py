@@ -25,7 +25,7 @@ class Transaction:
 
     def compute_hash(self):
         calculatedHash = apply_sha256(
-            self.sender + self.recipient + str(self.amount)
+            str(self.sender) + str(self.recipient) + str(self.amount)
         )
 
         return calculatedHash
