@@ -15,7 +15,7 @@ def apply_sha256(input):
 
 
 class Transaction:
-    def __init__(self, sender_account_num: int, recipient_account_num: int, amount: int, previous_hash: str):
+    def __init__(self, sender_account_num: str, recipient_account_num: str, amount: int, previous_hash: str):
         self.sender = sender_account_num
         self.recipient = recipient_account_num
         self.amount = amount
@@ -25,13 +25,13 @@ class Transaction:
 
     def compute_hash(self):
         calculatedHash = apply_sha256(
-            str(self.sender) + str(self.recipient) + str(self.amount)
+            self.sender + self.recipient + str(self.amount)
         )
 
         return calculatedHash
 
     def generateSignature(self, private_key):
-        data: str = str(self.sender) + str(self.recipient) + self.hash
+        data: str = self.sender + self.recipient + self.hash
         try:
             signature = rsa.sign(data.encode(), private_key, 'SHA-256')
             self.signature = signature
@@ -39,7 +39,7 @@ class Transaction:
             print(e)
 
     def verifySignature(self, public_key) -> bool:
-        data: str = str(self.sender) + str(self.recipient) + self.hash
+        data: str = self.sender + self.recipient + self.hash
         try:
             rsa.verify(data.encode('utf-8'), self.signature, public_key)
             return True
@@ -47,10 +47,10 @@ class Transaction:
             print(e)
         return False
 
-    def getSenderAccountNum(self) -> int:
+    def getSenderAccountNum(self) -> str:
         return self.sender
 
-    def getRecipientAccountNum(self) -> int:
+    def getRecipientAccountNum(self) -> str:
         return self.recipient
 
     def getHash(self) -> str:

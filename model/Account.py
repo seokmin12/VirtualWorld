@@ -16,7 +16,7 @@ def apply_sha256(input):
 
 
 class Account:
-    def __init__(self, account_number: int, name: str, balance: int, previous_hash: str):
+    def __init__(self, account_number: str, name: str, balance: int, previous_hash: str):
         self.account_number = account_number
         self.name = name
         self.balance = balance
@@ -40,7 +40,7 @@ class Account:
 
     def compute_hash(self) -> str:
         calculatedHash = apply_sha256(
-            str(self.account_number) + self.name + self.previous_hash
+            self.account_number + self.name + self.previous_hash
         )
 
         return calculatedHash
