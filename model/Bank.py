@@ -65,18 +65,21 @@ class Bank:
         recipient_account = next((acc for acc in self.accounts if acc.getAccountNumber() == recipient_account_num), None)
 
         if sender_account and recipient_account:
-            transaction = Transaction(sender_account_num, recipient_account_num, amount)
-            transaction.generateSignature(private_key)
+            if sender_account.balance >= amount:
+                transaction = Transaction(sender_account_num, recipient_account_num, amount)
+                transaction.generateSignature(private_key)
 
-            if not transaction.verifySignature(public_key):
-                print("Invalid transaction signature.")
-                return
+                if not transaction.verifySignature(public_key):
+                    print("Invalid transaction signature.")
+                    return
+                else:
+                    sender_account.transactions.append(transaction)
+                    sender_account.balance -= amount
+                    recipient_account.transactions.append(transaction)
+                    recipient_account.balance += amount
+                    print("Transfer successfully!")
             else:
-                sender_account.transactions.append(transaction)
-                sender_account.balance -= amount
-                recipient_account.transactions.append(transaction)
-                recipient_account.balance += amount
-                print("Transfer successfully!")
+                print("Sender doesn't have enough money.")
         else:
             print("Didn't find that account, please check again.")
 
