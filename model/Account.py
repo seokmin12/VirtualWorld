@@ -1,4 +1,6 @@
 from hashlib import sha256
+from model.Transaction import Transaction
+from typing import List
 
 
 def apply_sha256(input):
@@ -20,6 +22,7 @@ class Account:
         self.balance = balance
         self.previous_hash = previous_hash
         self.hash: str = self.compute_hash()
+        self.transactions: List = self.createGenesisTransaction()
 
     def deposit(self, amount: int) -> int:
         self.balance += amount
@@ -41,6 +44,10 @@ class Account:
         )
 
         return calculatedHash
+
+    def createGenesisTransaction(self):
+        genesis_transaction = Transaction(0, 0, 0, "0")
+        return [genesis_transaction]
 
     def getAccountNumber(self) -> str:
         return self.account_number
