@@ -15,12 +15,11 @@ def apply_sha256(input):
 
 
 class Transaction:
-    def __init__(self, sender_account_num: str, recipient_account_num: str, amount: int, previous_hash: str):
+    def __init__(self, sender_account_num: str, recipient_account_num: str, amount: int):
         self.sender = sender_account_num
         self.recipient = recipient_account_num
         self.amount = amount
         self.hash: str = self.compute_hash()
-        self.previous_hash = previous_hash
         self.signature: [bytes] = None
 
     def compute_hash(self):
@@ -56,11 +55,5 @@ class Transaction:
     def getHash(self) -> str:
         return self.hash
 
-    def getPreviousHash(self) -> str:
-        return self.previous_hash
-
     def setHash(self, hash: str):
         self.hash = hash
-
-    def setPreviousHash(self, previous_hash: str):
-        self.previous_hash = previous_hash

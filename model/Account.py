@@ -45,8 +45,9 @@ class Account:
 
         return calculatedHash
 
-    def createGenesisTransaction(self):
-        genesis_transaction = Transaction(0, 0, 0, "0")
+    @staticmethod
+    def createGenesisTransaction():
+        genesis_transaction = Transaction(0, 0, 0)
         return [genesis_transaction]
 
     def getAccountNumber(self) -> str:

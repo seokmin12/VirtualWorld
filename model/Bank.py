@@ -42,7 +42,11 @@ class Bank:
         if self.can_loan_amount > amount:
             for account in self.accounts:
                 if account.getAccountNumber() == account_number:
-                    transaction = Transaction(self.name, str(account_number), amount, account.getLatestTransaction().hash)
+                    transaction = Transaction(
+                        self.name,
+                        str(account_number),
+                        amount
+                    )
                     transaction.generateSignature(private_key)
                     if not transaction.verifySignature(public_key):
                         print("Invalid transaction signature.")
@@ -53,10 +57,28 @@ class Bank:
                         self.asset -= amount
                         account.balance += amount
                         print(f"The loan has been approved. Now your balance: {format(account.balance, ',')} {self.currency_unit}")
-                        for tran in account.transactions:
-                            print(tran.__dict__)
         else:
             print("The loan amount exceeds the loanable amount.")
+
+    def transfer(self, sender_account_num, recipient_account_num, amount: int, private_key, public_key):
+        sender_account = next((acc for acc in self.accounts if acc.getAccountNumber() == sender_account_num), None)
+        recipient_account = next((acc for acc in self.accounts if acc.getAccountNumber() == recipient_account_num), None)
+
+        if sender_account and recipient_account:
+            transaction = Transaction(sender_account_num, recipient_account_num, amount)
+            transaction.generateSignature(private_key)
+
+            if not transaction.verifySignature(public_key):
+                print("Invalid transaction signature.")
+                return
+            else:
+                sender_account.transactions.append(transaction)
+                sender_account.balance -= amount
+                recipient_account.transactions.append(transaction)
+                recipient_account.balance += amount
+                print("Transfer successfully!")
+        else:
+            print("Didn't find that account, please check again.")
 
     def getLatestAccount(self) -> Account:
         return self.accounts[-1]
