@@ -105,4 +105,6 @@ class StockMarket:
                     account.assets["stocks"][stock_name]["buy_price"] = new_aver_buy_price
                     profit = (stock_price - account.assets["stocks"][stock_name]["buy_price"]) * quantity
                     print(f"Stock {stock_name} selled {quantity} at {stock_price} successfully! Your profit: {profit}")
+            else:
+                print(f"{account.name} does not have {stock_name} in account.")
 
