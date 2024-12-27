@@ -12,7 +12,7 @@ class Stock:
             aver_profit_rate=0.1,
             sigma=0.2,
             period=1,
-            simulations=1000
+            simulations=1
     ):
         self.paths = None
         self.name = name
@@ -32,8 +32,8 @@ class Stock:
 
         for i in range(1, self.N):
             Z = np.random.normal(0, 1, self.simulations)  # 정규분포를 따르는 랜덤 변수
-            self.paths[:, i] = self.paths[:, i - 1] * np.exp(
-                (self.aver_profit_rate - 0.5 * self.sigma ** 2) * self.dt + self.sigma * np.sqrt(self.dt) * Z)
+            self.paths[:, i] = (self.paths[:, i - 1] * np.exp(
+                (self.aver_profit_rate - 0.5 * self.sigma ** 2) * self.dt + self.sigma * np.sqrt(self.dt) * Z)).astype(int)
 
     def displayChart(self):
         plt.figure(figsize=(10, 6))
@@ -43,6 +43,6 @@ class Stock:
         plt.ylabel('Stock Price')
         plt.show()
 
-    def getPriceForDay(self, day):
+    def getPriceForDay(self, day) -> int:
         price = self.paths.T[1 - day]
-        return price
+        return int(price[0])

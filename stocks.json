@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Tesla",
+    "issued_shares": 10000000,
+    "init_price": 200,
+    "aver_profit_rate": 3,
+    "sigma": 1.4
+  },
+  {
+    "name": "Nvidia",
+    "issued_shares": 4240000,
+    "init_price": 140,
+    "aver_profit_rate": 5,
+    "sigma": 2.1
+  },
+  {
+    "name": "Apple",
+    "issued_shares": 2134221,
+    "init_price": 90,
+    "aver_profit_rate": 2.3,
+    "sigma": 0.6
+  }
+]
