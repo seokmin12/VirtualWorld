@@ -26,7 +26,7 @@ class Account:
 
     def deposit(self, amount: int) -> int:
         self.balance += amount
-        print(f"{self.name} Deposited {amount} $. Current balance is: {self.balance}")
+        print(f"{self.name} Deposited {amount}. Current balance is: {self.balance}")
         return self.balance
 
     def withdraw(self, amount: int) -> int:
