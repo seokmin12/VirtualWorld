@@ -23,6 +23,10 @@ class Account:
         self.previous_hash = previous_hash
         self.hash: str = self.compute_hash()
         self.transactions: List = []
+        self.assets = {
+            "stocks": [],
+            "real_estate": []
+        }  # 보유 자산
 
     def deposit(self, amount: int) -> int:
         self.balance += amount
