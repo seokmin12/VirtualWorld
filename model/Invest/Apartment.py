@@ -10,7 +10,7 @@ class Apartment:
             condition: str,
             base_price: int,
             size: int = 32,
-            rooms: int = 32,
+            rooms: int = 3,
     ):
         """
             아파트 속성 초기화
@@ -29,6 +29,7 @@ class Apartment:
         self.floor = floor
         self.condition = condition
         self.base_price = base_price
+        self.price = base_price  # 초기 가격
         self.rent = round(base_price * 0.005, 2)  # 임대료는 기본 가격의 0.5%
 
     def fluctuate_price(self):
