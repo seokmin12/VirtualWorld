@@ -11,7 +11,7 @@ class Bank:
         self.name: str = "International Bank"
         self.currency_unit: str = "SKM"  # 통화 단위
         self.accounts: List = []
-        self.initAccount()  # 은행내 계좌 생성
+        self.initAccount()  # 초기 계좌 생성
         self.asset: int = asset + sum([account.balance for account in self.accounts])  # 은행 자본 100만원 + 은행 고객들의 계좌 전액
         self.interest_rate = interest_rate  # 금리
         self.can_loan_amount: int = int(self.asset * ((100 - payment_reserve_ratio) / 100))  # 지급 준비율: 10%, 대출 가능 금액: 은행 자본의 90%
@@ -21,17 +21,16 @@ class Bank:
         genesis_account = Account(account_number=0, name="Genesis Account", balance=0, previous_hash="0")
         self.accounts.append(genesis_account)
 
-        with open('users.json', 'r') as f:
-            users = json.load(f)
-        for user in users:
-            self.accounts.append(
-                Account(
-                    account_number=self.createRandomNum(),
-                    name=user["name"],
-                    balance=user["balance"],
-                    previous_hash=self.getLatestAccount().hash
-                )
-            )
+    def createAccount(self, name: str):
+        account = Account(
+                account_number=self.createRandomNum(),
+                name=name,
+                balance=0,
+                previous_hash=self.getLatestAccount().hash
+        )
+        self.accounts.append(account)
+        print(f"{name}'s account created successfully!")
+        return account
 
     # 계좌 번호 10자리 랜덤 생성
     def createRandomNum(self) -> str:

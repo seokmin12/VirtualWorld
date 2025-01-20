@@ -2,11 +2,11 @@
   {
     "id": 1,
     "name": "tommy",
-    "balance": 1000000
+    "balance": 0
   },
   {
     "id": 2,
     "name": "jack",
-    "balance": 20000000
+    "balance": 0
   }
 ]
