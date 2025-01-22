@@ -29,7 +29,7 @@ class Bank:
                 previous_hash=self.getLatestAccount().hash
         )
         self.accounts.append(account)
-        print(f"{name}'s account created successfully!")
+        # print(f"{name}'s account created successfully!")
         return account
 
     # 계좌 번호 10자리 랜덤 생성

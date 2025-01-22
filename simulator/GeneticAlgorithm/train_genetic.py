@@ -1,6 +1,5 @@
-from GeneticSimulatorEnv import GeneticSimulatorEnv
-from DQNAgent import DQNAgent
-import numpy as np
+from simulator.GeneticAlgorithm.GeneticSimulatorEnv import GeneticSimulatorEnv
+from simulator.GeneticAlgorithm.DQNAgent import DQNAgent
 import torch
 
 

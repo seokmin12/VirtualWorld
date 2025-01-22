@@ -9,29 +9,25 @@ import random
 class DQN(nn.Module):
     def __init__(self, input_size, output_size):
         super(DQN, self).__init__()
-        self.fc1 = nn.Linear(input_size, 128)
-        self.fc2 = nn.Linear(128, 128)
-        self.fc3 = nn.Linear(128, 64)
-        self.fc4 = nn.Linear(64, output_size)
+        self.fc1 = nn.Linear(input_size, 64)
+        self.fc2 = nn.Linear(64, 32)
+        self.fc3 = nn.Linear(32, output_size)
         
         # He 초기화
         nn.init.kaiming_normal_(self.fc1.weight)
         nn.init.kaiming_normal_(self.fc2.weight)
         nn.init.kaiming_normal_(self.fc3.weight)
-        nn.init.kaiming_normal_(self.fc4.weight)
 
         # Layer Normalization 사용 (배치 크기에 독립적)
-        self.ln1 = nn.LayerNorm(128)
-        self.ln2 = nn.LayerNorm(128)
-        self.ln3 = nn.LayerNorm(64)
+        self.ln1 = nn.LayerNorm(64)
+        self.ln2 = nn.LayerNorm(32)
         
         self.dropout = nn.Dropout(0.2)
 
     def forward(self, x):
         x = self.dropout(torch.relu(self.ln1(self.fc1(x))))
         x = self.dropout(torch.relu(self.ln2(self.fc2(x))))
-        x = self.dropout(torch.relu(self.ln3(self.fc3(x))))
-        return self.fc4(x)
+        return self.fc3(x)
 
 
 class DQNAgent:
