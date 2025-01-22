@@ -59,12 +59,13 @@ class PPOAgent:
             return action.item()
     
     def train(self, states, actions, old_log_probs, rewards, next_states, dones):
-        states = torch.FloatTensor(states).to(self.device)
-        actions = torch.LongTensor(actions).to(self.device)
-        old_log_probs = torch.FloatTensor(old_log_probs).to(self.device)
-        rewards = torch.FloatTensor(rewards).to(self.device)
-        next_states = torch.FloatTensor(next_states).to(self.device)
-        dones = torch.FloatTensor(dones).to(self.device)
+        # numpy array로 변환 후 tensor로 변환
+        states = torch.FloatTensor(np.array(states)).to(self.device)
+        actions = torch.LongTensor(np.array(actions)).to(self.device)
+        old_log_probs = torch.FloatTensor(np.array(old_log_probs)).to(self.device)
+        rewards = torch.FloatTensor(np.array(rewards)).to(self.device)
+        next_states = torch.FloatTensor(np.array(next_states)).to(self.device)
+        dones = torch.FloatTensor(np.array(dones)).to(self.device)
         
         # GAE(Generalized Advantage Estimation) 계산
         with torch.no_grad():
