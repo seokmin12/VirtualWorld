@@ -28,15 +28,11 @@ class Entity:
         mining_time = self.mining_difficulty / (self.mining_power * 10)
         health_cost = mining_time * 0.05
         self.health -= health_cost
-        success_threshold = 0.5 + 0.5 * self.work_ethic
-        if random.random() < success_threshold:
-            self.total_mined += 1
-            if self.account:
-                self.account.deposit(self.reward_per_block)
-            reward = 1.0
-        else:
-            self.health -= 2
-            reward = -0.5
+        self.total_mined += 1
+        if self.account:
+            self.account.deposit(self.reward_per_block)
+        reward = 1.0
+
         return reward
 
     def rest(self) -> float:
