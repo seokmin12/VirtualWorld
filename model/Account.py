@@ -36,10 +36,10 @@ class Account:
     def withdraw(self, amount: int) -> int:
         if self.balance > amount:
             self.balance -= amount
-            print(f"{self.name} Withdrew {amount} $. Current balance is: {self.balance}")
+            # print(f"{self.name} Withdrew {amount} $. Current balance is: {self.balance}")
             return amount
         else:
-            print("You don't have enough funds to withdraw.")
+            # print("You don't have enough funds to withdraw.")
             return 0
 
     def compute_hash(self) -> str:
