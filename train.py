@@ -3,7 +3,7 @@ from simulator.PPOAlgorithm.ppo_agent import PPO
 import torch
 import os
 import numpy as np
-from tqdm import tqdm
+from datetime import datetime
 
 
 def train():
@@ -111,6 +111,8 @@ def train():
     ppo_agent = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip, has_continuous_action_space,
                     action_std)
 
+    start_time = datetime.now().replace(microsecond=0)
+
     log_f = open(log_f_name, "w+")
     log_f.write('episode,timestep,reward\n')
 
@@ -202,6 +204,14 @@ def train():
         print("-" * 50)
 
     log_f.close()
+
+    # print total training time
+    print("============================================================================================")
+    end_time = datetime.now().replace(microsecond=0)
+    print("Started training at (GMT) : ", start_time)
+    print("Finished training at (GMT) : ", end_time)
+    print("Total training time  : ", end_time - start_time)
+    print("============================================================================================")
 
 
 if __name__ == "__main__":
