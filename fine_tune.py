@@ -7,6 +7,7 @@ import numpy as np
 from SimulatorEnv import Env
 from simulator.PPOAlgorithm.ppo_agent import ActorCriticNetwork
 
+
 # Dataset 클래스 (변경 없음)
 class FineTuneDataset(Dataset):
     """
@@ -16,6 +17,7 @@ class FineTuneDataset(Dataset):
       - target balance (next state's index 0, as a 1-dim array),
       - target health (next state's index 1, as a 1-dim array)
     """
+
     def __init__(self, num_samples: int = 1000):
         self.data = []
         env = Env()
@@ -53,6 +55,7 @@ class PPOFineTuner(pl.LightningModule):
     In this example, we fine tune on an auxiliary regression task:
     predicting the next state's normalized balance and health.
     """
+
     def __init__(self, state_dim: int, hidden_dim: int, action_dim: int, lr: float = 1e-5):
         super().__init__()
         self.model = ActorCriticNetwork(state_dim, hidden_dim, action_dim)
@@ -63,13 +66,12 @@ class PPOFineTuner(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         states, balance_targets, health_targets = batch
-        # Forward pass: obtain auxiliary predictions from the model.
+        # Forward pass: obtain auxiliary predictions from the module.
         _, _, aux_balance, aux_health, _ = self.model(states)
-        loss_balance = F.mse_loss(aux_balance, balance_targets)
-        loss_health = F.mse_loss(aux_health, health_targets)
+        loss_balance = F.smooth_l1_loss(aux_balance, balance_targets)
+        loss_health = F.smooth_l1_loss(aux_health, health_targets)
         loss = loss_balance + loss_health
         self.log("train_loss", loss, on_step=True, on_epoch=True, prog_bar=True)
-        # 개별 손실 값도 함께 로그
         self.log("train_loss_balance", loss_balance, on_step=False, on_epoch=True)
         self.log("train_loss_health", loss_health, on_step=False, on_epoch=True)
         return loss
@@ -78,8 +80,8 @@ class PPOFineTuner(pl.LightningModule):
         states, balance_targets, health_targets = batch
         # 검증 단계 forward
         _, _, aux_balance, aux_health, _ = self.model(states)
-        loss_balance = F.mse_loss(aux_balance, balance_targets)
-        loss_health = F.mse_loss(aux_health, health_targets)
+        loss_balance = F.smooth_l1_loss(aux_balance, balance_targets)
+        loss_health = F.smooth_l1_loss(aux_health, health_targets)
         loss = loss_balance + loss_health
         # 검증 손실 로그
         self.log("val_loss", loss, on_step=False, on_epoch=True, prog_bar=True)
@@ -90,7 +92,7 @@ class PPOFineTuner(pl.LightningModule):
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr)
         # 검증 손실 개선이 없으면 LR을 감소시킴
-        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=2, verbose=True)
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=2)
         return {
             "optimizer": optimizer,
             "lr_scheduler": {
@@ -123,14 +125,27 @@ def fine_tune():
     val_size = len(dataset) - train_size
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
-    train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-    val_dataloader = DataLoader(val_dataset, batch_size=64, shuffle=False)
+    # Increase num_workers to reduce potential bottlenecks.
+    train_dataloader = DataLoader(
+        train_dataset,
+        batch_size=64,
+        shuffle=True,
+        num_workers=9,
+        persistent_workers=True  # This flag keeps workers alive across epochs
+    )
+    val_dataloader = DataLoader(
+        val_dataset, 
+        batch_size=64, 
+        shuffle=False, 
+        num_workers=9,
+        persistent_workers=True
+    )
 
     # Early stopping 콜백 추가 (검증 손실 개선이 없으면 종료).
     from pytorch_lightning.callbacks import EarlyStopping
     early_stop_callback = EarlyStopping(
         monitor='val_loss',
-        min_delta=0.00,
+        min_delta=0.001,
         patience=3,
         verbose=True,
         mode='min'
@@ -158,7 +173,7 @@ def fine_tune():
         "optimizer_state_dict": optimizer.state_dict(),
         "scheduler_state_dict": scheduler.state_dict(),
     }, "PPO_preTrained/PPO_fine_tuned.pth")
-    print("Fine-tuned model (with optimizer and scheduler) saved to PPO_preTrained/PPO_fine_tuned.pth")
+    print("Fine-tuned module (with optimizer and scheduler) saved to PPO_preTrained/PPO_fine_tuned.pth")
 
 
 if __name__ == "__main__":
