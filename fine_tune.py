@@ -138,7 +138,7 @@ def fine_tune():
 
     # PyTorch Lightning Trainer 초기화.
     trainer = pl.Trainer(
-        max_epochs=20,  # 더 정교한 미세조정을 위해 에포크 수를 증가.
+        max_epochs=100,  # 더 정교한 미세조정을 위해 에포크 수를 증가.
         log_every_n_steps=10,
         callbacks=[early_stop_callback],
         gradient_clip_val=0.5  # Gradient clipping을 통한 학습 안정성 강화.
@@ -147,9 +147,18 @@ def fine_tune():
     # 미세조정 진행 (학습 및 검증 루프 제공).
     trainer.fit(fine_tuner, train_dataloader, val_dataloader)
 
-    # 미세조정된 모델 저장.
-    torch.save({"network_state_dict": fine_tuner.model.state_dict()}, "PPO_preTrained/PPO_fine_tuned.pth")
-    print("Fine-tuned model saved to PPO_preTrained/PPO_fine_tuned.pth")
+    # 미세조정된 모델과 함께 optimizer 및 scheduler 상태 저장.
+    # trainer.optimizers는 리스트이므로 첫 번째 optimizer를 가져옵니다.
+    optimizer = trainer.optimizers[0]
+    # 추출된 lr_scheduler는 trainer.lr_scheduler_configs에 저장되어 있습니다.
+    scheduler = trainer.lr_scheduler_configs[0].scheduler
+
+    torch.save({
+        "network_state_dict": fine_tuner.model.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict(),
+        "scheduler_state_dict": scheduler.state_dict(),
+    }, "PPO_preTrained/PPO_fine_tuned.pth")
+    print("Fine-tuned model (with optimizer and scheduler) saved to PPO_preTrained/PPO_fine_tuned.pth")
 
 
 if __name__ == "__main__":
