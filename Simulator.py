@@ -1,8 +1,8 @@
 import random
 import time
-from model.Bank import Bank
-from model.StockMarket import StockMarket
-from model.Entity import Entity
+from module.Bank import Bank
+from module.StockMarket import StockMarket
+from module.Entity import Entity
 from typing import List
 
 

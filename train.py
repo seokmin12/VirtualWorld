@@ -5,6 +5,7 @@ import os
 import numpy as np
 from datetime import datetime
 from utils.logger import Logger
+from tqdm import tqdm
 
 
 def train():
@@ -16,7 +17,7 @@ def train():
 
     print_freq = 4  # print avg reward in the interval (in num timesteps)
     log_freq = 20  # log avg reward in the interval (in num timesteps)
-    save_model_freq = 20  # save model frequency (in num timesteps)
+    save_model_freq = 20  # save module frequency (in num timesteps)
 
     action_std = 0.6  # starting std for action distribution (for continuous case)
     action_std_decay_rate = 0.05  # linearly decay action_std
@@ -49,7 +50,6 @@ def train():
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
     # get number of log files in the log directory
-    run_num = 0
     current_num_files = next(os.walk(log_dir))[2]
     run_num = len(current_num_files)
 
@@ -68,16 +68,11 @@ def train():
     )
 
     """checkpointing"""
-    run_num_pretrained = 0  # change this to prevent overwriting weights in the same folder
-
     directory = "PPO_preTrained"
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-    current_num_pretrained = next(os.walk(directory))[2]
-    run_num_pretrained = len(current_num_pretrained)
-
-    checkpoint_path = directory + "/PPO_{}_{}.pth".format(random_seed, run_num_pretrained)
+    checkpoint_path = directory + "/PPO_{}_{}.pth".format(random_seed, run_num)
     summary_log_f.info(f"save checkpoint path : {checkpoint_path}\n")
 
     summary_log_f.info(
@@ -130,7 +125,7 @@ def train():
     timestep_log_f.write('episode,timestep,reward\n')
 
     result_log_f = open(result_log_f_name, "w+")
-    result_log_f.write('episode,timestep,age,day,end_reason\n')
+    result_log_f.write('episode,timestep,total_mined,balance,age,day,end_reason\n')
 
     # Initialize logging and experience buffers
     log_running_reward = 0
@@ -139,7 +134,7 @@ def train():
     update_interval = 20  # Number of timesteps before triggering a PPO update
     global_step = 0  # Global timestep counter
 
-    for i_episode in range(episode):
+    for i_episode in tqdm(range(episode), desc="Total Episode"):
         state, _ = env.reset()
         current_ep_reward = 0
         time_step = 0
@@ -153,7 +148,9 @@ def train():
         old_log_probs = []  # To store the log probabilities returned by select_action
         old_values = []  # To store state-value estimates returned by select_action
 
-        while not terminated and time_step < max_timesteps_len:
+        for _ in tqdm(range(max_timesteps_len), desc=f"Episode: {i_episode + 1}", leave=False):
+            if terminated:
+                break
             action, action_log_prob, value = ppo_agent.select_action(state)
             next_state, reward, done, truncated, info = env.step(action)
 
@@ -183,12 +180,14 @@ def train():
 
         ppo_agent.update(states, actions, rewards, dones, next_states, old_log_probs, old_values)
         ppo_agent.save(checkpoint_path)
-        result_log_f.write('{},{},{},{},{}\n'.format(i_episode, time_step, env.entity.age, env.current_day,
-                                              ("Health depleted" if env.entity.health <= 0 else
-                                               "Max age reached" if env.entity.age >= 100 else
-                                               "Happiness depleted" if env.entity.happiness <= 0.05 else
-                                               "Max episode length reached" if time_step >= max_timesteps_len else
-                                               "Unknown reason")))
+        result_log_f.write(
+            '{},{},{},{},{},{},{}\n'.format(i_episode, time_step, env.entity.total_mined, env.entity.account.balance,
+                                            env.entity.age, env.current_day,
+                                            ("Health depleted" if env.entity.health <= 0 else
+                                             "Max age reached" if env.entity.age >= 100 else
+                                             "Happiness depleted" if env.entity.happiness <= 0.05 else
+                                             "Max episode length reached" if time_step >= max_timesteps_len else
+                                             "Unknown reason")))
         result_log_f.flush()
 
         states.clear()
@@ -217,7 +216,7 @@ def train():
             f"Trading Skill: {env.entity.trading_skill:.2f}\n"
             f"Work Ethic: {env.entity.work_ethic:.2f}\n"
             f"Risk Tolerance: {env.entity.risk_tolerance:.2f}\n"
-            
+
             "\nAchievements:\n"
             f"Total Mined: {env.entity.total_mined}\n"
             f"Total Traded: {env.entity.total_traded}\n"
@@ -228,9 +227,9 @@ def train():
              "Happiness depleted" if env.entity.happiness <= 0.05 else
              "Max episode length reached" if time_step >= max_timesteps_len else
              "Unknown reason") + "\n"
-            f"Current Time: Day {env.current_day}\n"
-            f"Current Timestep: {time_step}\n"
-            f"{'-' * 90}\n"
+                                 f"Current Time: Day {env.current_day}\n"
+                                 f"Current Timestep: {time_step}\n"
+                                 f"{'-' * 90}\n"
         )
 
     timestep_log_f.close()

@@ -1,6 +1,6 @@
 import json
-from model.Account import Account
-from model.Transaction import Transaction
+from module.Account import Account
+from module.Transaction import Transaction
 from typing import List
 import random
 import string

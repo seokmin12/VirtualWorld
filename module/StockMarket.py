@@ -1,5 +1,5 @@
-from model.Invest.Stock import Stock
-from model.Transaction import Transaction
+from module.Invest.Stock import Stock
+from module.Transaction import Transaction
 from typing import List
 import json
 

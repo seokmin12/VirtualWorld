@@ -1,5 +1,5 @@
 from hashlib import sha256
-from model.Transaction import Transaction
+from module.Transaction import Transaction
 from typing import List
 
 

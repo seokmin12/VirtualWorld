@@ -1,7 +1,7 @@
 import gym
 import numpy as np
-from model.Bank import Bank
-from model.Entity import Entity
+from module.Bank import Bank
+from module.Entity import Entity
 
 
 class Env(gym.Env):
