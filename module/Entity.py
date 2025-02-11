@@ -3,7 +3,7 @@ from typing import List
 
 
 class Entity:
-    def __init__(self, name: str):
+    def __init__(self, name: str, bank):
         self.name: str = name
         self.health: float = 100.0
         self.age: int = 20
@@ -14,12 +14,9 @@ class Entity:
         self.mining_power: float = 10.0
         self.rest_recovery: float = 10.0
         # Behavioral traits
-        self.work_ethic: float = random.uniform(0, 1)
-        self.trading_skill: float = random.uniform(0, 1)
-        self.risk_tolerance: float = random.uniform(0, 1)
         self.total_mined: int = 0
         self.total_traded: int = 0
-        self.account = None  # Will be assigned via the Bank
+        self.account = bank.createAccount(self.name)  # Will be assigned via the Bank
 
         self.mining_difficulty = 10000  # Mining difficulty
         self.reward_per_block = 50  # Reward per successful mining block

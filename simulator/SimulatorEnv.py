@@ -7,8 +7,7 @@ from module.Entity import Entity
 class Env(gym.Env):
     def __init__(self):
         self.bank = Bank()
-        self.entity = Entity("entity")
-        self.entity.account = self.bank.createAccount(self.entity.name)
+        self.entity = Entity("entity", self.bank)
         self.action_space = gym.spaces.Discrete(3)  # mine, rest, leisure
         self.observation_space = gym.spaces.Box(
             low=0.0, high=1.0, shape=(7,), dtype=np.float32
@@ -96,7 +95,7 @@ class Env(gym.Env):
         return self.get_state(), reward, done, False, info
 
     def reset(self):
-        self.entity = Entity("entity")
+        self.entity = Entity("entity", self.bank)
         self.entity.account = self.bank.createAccount(self.entity.name)
         self.current_day = 0
         self.current_hour = 0

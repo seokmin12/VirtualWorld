@@ -222,7 +222,7 @@ class DeepPPOAgent:
             # Shuffle all indices for this epoch
             indices = torch.randperm(dataset_size)
             for start in range(0, dataset_size, self.batch_size):
-                batch_indices = indices[start : start + self.batch_size]
+                batch_indices = indices[start: start + self.batch_size]
                 batch_states = states_tensor[batch_indices]
                 batch_actions = actions_tensor[batch_indices]
                 batch_old_log_probs = old_log_probs_tensor[batch_indices]
