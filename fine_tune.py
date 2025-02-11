@@ -4,8 +4,8 @@ import pytorch_lightning as pl
 from torch.utils.data import DataLoader, Dataset, random_split
 import numpy as np
 
-from SimulatorEnv import Env
-from simulator.PPOAlgorithm.ppo_agent import ActorCriticNetwork
+from simulator.SimulatorEnv import Env
+from agents.ppo import ActorCriticNetwork
 
 
 # Dataset 클래스 (변경 없음)

@@ -1,4 +1,5 @@
 import random
+import numpy as np
 from typing import List
 
 
@@ -18,8 +19,54 @@ class Entity:
         self.total_traded: int = 0
         self.account = bank.createAccount(self.name)  # Will be assigned via the Bank
 
-        self.mining_difficulty = 10000  # Mining difficulty
-        self.reward_per_block = 50  # Reward per successful mining block
+        self.mining_difficulty: int = 10000  # Mining difficulty
+        self.reward_per_block: int = 50  # Reward per successful mining block
+
+        self.current_day: int = 0
+        self.current_hour: float = 0.0
+        self.work_hours: float = 0.0
+        # 플래그 추가: 이미 종료되었으면 True
+        self.terminated: bool = False
+
+    def reset(self):
+        self.health = 100.0
+        self.age = 20
+        self.lifespan = 100
+        self.happiness = 1.0
+        self.current_condition = "medium"
+        self.current_day = 0
+        self.current_hour = 0.0
+        self.work_hours = 0.0
+
+    def get_state(self) -> np.ndarray:
+        condition_map = {"low": 0.0, "medium": 0.5, "high": 1.0}
+        norm_balance: float = self.account.balance / 10000.0
+        norm_health: float = self.health / 100.0
+        norm_happiness: float = self.happiness / 1.0
+        condition_value: float = condition_map.get(self.current_condition)
+        norm_time_of_day: float = self.current_day / 24.0
+        norm_work_hours: float = self.work_hours / 12.0
+        norm_age: float = self.age / 100.0
+
+        state = np.array([
+            norm_balance,
+            norm_health,
+            norm_happiness,
+            condition_value,
+            norm_time_of_day,
+            norm_work_hours,
+            norm_age
+        ], dtype=np.float32)
+
+        # Add clipping to ensure all values are within bounds
+        state = np.clip(state, 0.0, 1.0)
+
+        # Add check for NaN values
+        if np.any(np.isnan(state)):
+            print("Warning: NaN values detected in state!")
+            state = np.nan_to_num(state, nan=0.0)
+
+        return state
 
     def mine(self) -> float:
         mining_time = self.mining_difficulty / (self.mining_power * 10)

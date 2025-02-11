@@ -16,36 +16,6 @@ class Env(gym.Env):
         self.current_hour: float = 0.0
         self.work_hours: float = 0.0
 
-    def get_state(self) -> np.ndarray:
-        condition_map = {"low": 0.0, "medium": 0.5, "high": 1.0}
-        norm_balance: float = self.entity.account.balance / 10000.0
-        norm_health: float = self.entity.health / 100.0
-        norm_happiness: float = self.entity.happiness / 1.0
-        condition_value: float = condition_map.get(self.entity.current_condition)
-        norm_time_of_day: float = self.current_day / 24.0
-        norm_work_hours: float = self.work_hours / 12.0
-        norm_age: float = self.entity.age / 100.0
-
-        state = np.array([
-            norm_balance,
-            norm_health,
-            norm_happiness,
-            condition_value,
-            norm_time_of_day,
-            norm_work_hours,
-            norm_age
-        ], dtype=np.float32)
-
-        # Add clipping to ensure all values are within bounds
-        state = np.clip(state, 0.0, 1.0)
-
-        # Add check for NaN values
-        if np.any(np.isnan(state)):
-            print("Warning: NaN values detected in state!")
-            state = np.nan_to_num(state, nan=0.0)
-
-        return state
-
     def step(self, action: int):
         reward: float = 0.0
         done: bool = False  # termination flag
@@ -92,12 +62,11 @@ class Env(gym.Env):
             'happiness': self.entity.happiness
         }
 
-        return self.get_state(), reward, done, False, info
+        return self.entity.get_state(), reward, done, False, info
 
     def reset(self):
         self.entity = Entity("entity", self.bank)
-        self.entity.account = self.bank.createAccount(self.entity.name)
         self.current_day = 0
         self.current_hour = 0
         self.work_hours = 0
-        return self.get_state(), {}
+        return self.entity.get_state(), {}
