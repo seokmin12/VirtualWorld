@@ -38,6 +38,9 @@ class Entity:
         self.lifespan = 100
         self.happiness = 1.0
         self.current_condition = "medium"
+        self.total_mined = 0
+        self.total_traded = 0
+        self.religion_power = 0.0
         self.current_day = 0
         self.current_hour = 0.0
         self.work_hours = 0.0
@@ -112,3 +115,23 @@ class Entity:
             reward = 1.2
 
         return reward
+
+    def trade(self, other, amount: float) -> float:
+        if amount <= 0:
+            return -1.0
+
+        if self.account.balance < amount:
+            return -1.0
+
+        if not self.account.withdraw(amount):
+            return -1.0
+
+        other.account.deposit(amount)
+
+        self.total_traded += amount
+        other.total_traded += amount
+
+        self.happiness = min(1.0, self.happiness + 0.02)
+        other.happiness = min(1.0, other.happiness + 0.02)
+
+        return 1.0

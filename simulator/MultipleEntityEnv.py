@@ -1,5 +1,6 @@
 import gym
 import numpy as np
+import random
 from module.Bank import Bank
 from module.Entity import Entity
 
@@ -8,7 +9,7 @@ class MultipleEntityEnv(gym.Env):
     def __init__(self):
         self.bank = Bank()
         self.entities = [Entity(f"entity{i}", self.bank) for i in range(2)]
-        self.action_space = gym.spaces.Discrete(4)  # mine, rest, leisure, religious_activity
+        self.action_space = gym.spaces.Discrete(5)  # mine, rest, leisure, religious_activity, trade
         self.observation_space = gym.spaces.Box(
             low=0.0, high=1.0, shape=(8,), dtype=np.float32
         )
@@ -51,8 +52,12 @@ class MultipleEntityEnv(gym.Env):
                 reward += entity.leisure()
             elif action == 3:
                 reward += entity.religious_activity()
+            elif action == 4:
+                trade_amount = round(random.uniform(0.0, entity.account.balance), 0)
+                other_entity = random.choice([e for e in self.entities if e != entity])
+                reward += entity.trade(other_entity, trade_amount)
             else:
-                reward -= 1
+                reward -= 1.0
 
             survival_reward = 0.5 * (entity.health / 100.0) + 0.5 * (entity.happiness)
             reward += survival_reward
