@@ -8,9 +8,9 @@ class Env(gym.Env):
     def __init__(self):
         self.bank = Bank()
         self.entity = Entity("entity", self.bank)
-        self.action_space = gym.spaces.Discrete(3)  # mine, rest, leisure
+        self.action_space = gym.spaces.Discrete(4)  # mine, rest, leisure, religious_activity
         self.observation_space = gym.spaces.Box(
-            low=0.0, high=1.0, shape=(7,), dtype=np.float32
+            low=0.0, high=1.0, shape=(8,), dtype=np.float32
         )
         self.current_day: int = 0
         self.current_hour: float = 0.0
@@ -39,6 +39,8 @@ class Env(gym.Env):
             reward += self.entity.rest()
         elif action == 2:  # Leisure
             reward += self.entity.leisure()
+        elif action == 3:  # Religious Activity
+            reward += self.entity.religious_activity()
         else:
             reward -= 1  # penalty on unknown action
 

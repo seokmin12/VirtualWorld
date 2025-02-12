@@ -8,9 +8,9 @@ class MultipleEntityEnv(gym.Env):
     def __init__(self):
         self.bank = Bank()
         self.entities = [Entity(f"entity{i}", self.bank) for i in range(2)]
-        self.action_space = gym.spaces.Discrete(3)
+        self.action_space = gym.spaces.Discrete(4)  # mine, rest, leisure, religious_activity
         self.observation_space = gym.spaces.Box(
-            low=0.0, high=1.0, shape=(7,), dtype=np.float32
+            low=0.0, high=1.0, shape=(8,), dtype=np.float32
         )
 
     def step(self, action_list: list):
@@ -49,6 +49,8 @@ class MultipleEntityEnv(gym.Env):
                 reward += entity.rest()
             elif action == 2:
                 reward += entity.leisure()
+            elif action == 3:
+                reward += entity.religious_activity()
             else:
                 reward -= 1
 
