@@ -1,10 +1,7 @@
 <div align="center">
     <h3>
-        🎮 가상 세상 시뮬레이터
+        🎮 Virtual World Simulator
     </h3>
-    <p>
-        Virtual World Simulator
-    </p>
 </div>
 
 ---
@@ -44,11 +41,11 @@
 </details>
 
 ## Introduction
-**시뮬레이션 가설(Simulation Hypothesis)** 은 우리가 인식하는 이 우주가 실재하는 세계가 아니라, 거대한 가상 시뮬레이션 속에서 구현된 것일 수 있다는 가설이다. 이는 철학자 **닉 보스트롬(Nick Bostrom)** 이 2003년 논문 ＜당신은 컴퓨터 시뮬레이션 속에 살고 있는가?(Are You Living In a Computer Simulation?)＞에서 제시한 개념으로, 고도로 발달한 문명이 현실과 구별할 수 없는 시뮬레이션을 생성했을 가능성을 논증한다.
+The **Simulation Hypothesis** proposes that the universe we perceive may not be a real, physical world, but rather a vast virtual simulation. This concept was introduced by philosopher **Nick Bostrom** in his 2003 paper [*"Are You Living In a Computer Simulation?"*](https://simulation-argument.com/simulation/), arguing that an advanced civilization may have created simulations indistinguishable from reality.
 
-나는 이 가설을 흥미롭게 받아들이며, 유사한 시스템을 구현할 수 있지 않을까 하는 고민을 해왔다. 현실 세계에서 경제 시스템이 형성되는 과정을 살펴보면, 화폐와 금융 시스템이 등장하면서 시장이 발달했고, 이는 국가의 형성과 발전으로 이어졌다. 이러한 원리가 디지털 환경에서도 적용될 수 있다면, 가상의 경제와 국가 또한 충분히 구축할 수 있을 것이다. 실제로 비트코인과 같은 암호화폐는 국경 없는 금융 시스템을 구축하고 있으며, 메타버스에서는 점차 독립적인 경제와 국가 개념이 자리 잡아가고 있다.
+I found this hypothesis fascinating and began exploring whether a similar system could be implemented. Observing how economic systems develop in the real world, I noticed that with the introduction of currency and financial systems, markets emerged, leading to the formation and evolution of nations. If such principles can be applied to digital environments, then the creation of virtual economies and states should also be feasible. In fact, cryptocurrencies like Bitcoin have established borderless financial systems, and concepts of independent economies and virtual states are emerging within the **metaverse**.
 
-이러한 개념을 바탕으로, 나는 하나의 개체(인간)를 정의하고 그 개체가 상호작용할 수 있는 환경을 구축하였다. 해당 환경 내에서 개체는 특정 행동을 수행하며 생존을 위한 최적의 전략을 학습하고, 수명이 다할 때까지 최대한 효율적으로 살아남도록 설계되었다. 이를 통해, 시뮬레이션 내에서 자율적으로 진화하는 시스템을 구현하는 가능성을 탐구하고자 한다.
+Building on these ideas, I have defined an entity (a human) and constructed an interactive environment in which this entity performs specific actions, learns optimal survival strategies, and strives to live as efficiently and as long as possible. Through this approach, I aim to explore the potential for autonomous evolution within a simulation.
 
 ## Getting Started
 
@@ -80,20 +77,20 @@ python fine_tune.py --checkpoint <path_to_trained_model>
 
 ## Project Structure
 ### Module
-- **[module/Entity.py:](./module/Entity.py)** 개체 정의 및 행동 (채굴, 휴식, 여가, 종교 활동, 거래) 정의 
-- **[module/Account.py:](./module/Account.py)** 개체의 계좌 정의 및 암호화
-- **[module/Bank.py:](./module/Bank.py)** 가상 은행 정의 및 계좌들 간 블록체인화
-- **[module/Transaction.py:](./module/Transaction.py)** 계좌의 거래내역 정의 및 암호화
-- **[module/StockMarket.py:](./module/StockMarket.py)** 가상 주식 시장 정의
-- **[module/Invest/Stock.py:](./module/Invest/Stock.py)** 가상 주식 정의
+- **[module/Entity.py:](./module/Entity.py)** Defines entities and their actions (mining, resting, leisure, religious activities, transactions).
+- **[module/Account.py:](./module/Account.py)** Defines entity accounts and encryption.
+- **[module/Bank.py:](./module/Bank.py)** Defines a virtual bank and blockchain-based transactions between accounts.
+- **[module/Transaction.py:](./module/Transaction.py)** Manages transaction records and encryption.
+- **[module/StockMarket.py:](./module/StockMarket.py)** Defines a virtual stock market.
+- **[module/Invest/Stock.py:](./module/Invest/Stock.py)** Defines virtual stocks.
 
 ### Simulator
-- **[simulator/SimulatorEnv.py:](./simulator/SimulatorEnv.py)** 단일 개체 시뮬레이션 환경 구현
-- **[simulator/MultiEntityEnv.py:](./simulator/MultiEntityEnv.py)** 다중 개체 시뮬레이션 환경 구현
+- **[simulator/SimulatorEnv.py:](./simulator/SimulatorEnv.py)** Implements a single-entity simulation environment.
+- **[simulator/MultiEntityEnv.py:](./simulator/MultiEntityEnv.py)** Implements a multi-entity simulation environment.
 
-### Train
-- **[train.py:](./train.py)** 에이전트 훈련
-- **[fine_tune.py:](./fine_tune.py)** 미세조정 학습 지원
+### Training
+- **[train.py:](./train.py)** Agent training.
+- **[fine_tune.py:](./fine_tune.py)** Supports fine-tuning of the trained model.
 
 ## Model Results
 [Results](./PPO_logs/PPO_3/results.csv)
