@@ -3,6 +3,7 @@ import torch.nn.functional as F
 import pytorch_lightning as pl
 from torch.utils.data import DataLoader, Dataset, random_split
 import numpy as np
+import argparse
 
 from simulator.SimulatorEnv import Env
 from agents.ppo import ActorCriticNetwork
@@ -104,7 +105,7 @@ class PPOFineTuner(pl.LightningModule):
         }
 
 
-def fine_tune():
+def fine_tune(path):
     # 환경 초기화로 상태 차원 및 행동 차원 획득.
     env = Env()
     state_dim = env.observation_space.shape[0]
@@ -114,7 +115,7 @@ def fine_tune():
     fine_tuner = PPOFineTuner(state_dim, hidden_dim, action_dim, lr=1e-5)
 
     # 사전 학습된 가중치 불러오기.
-    checkpoint_path = "PPO_preTrained/PPO_0_0.pth"  # 실제 checkpoint 경로로 업데이트 필요.
+    checkpoint_path = path  # 실제 checkpoint 경로로 업데이트 필요.
     checkpoint = torch.load(checkpoint_path, map_location=torch.device("cpu"))
     fine_tuner.model.load_state_dict(checkpoint["network_state_dict"])
     print("Loaded pre-trained weights from:", checkpoint_path)
@@ -172,9 +173,15 @@ def fine_tune():
         "network_state_dict": fine_tuner.model.state_dict(),
         "optimizer_state_dict": optimizer.state_dict(),
         "scheduler_state_dict": scheduler.state_dict(),
-    }, "PPO_preTrained/PPO_fine_tuned.pth")
+    }, "PPO_preTrained/PPO_fine_tuned.pt")
     print("Fine-tuned module (with optimizer and scheduler) saved to PPO_preTrained/PPO_fine_tuned.pth")
 
 
 if __name__ == "__main__":
-    fine_tune()
+    parser = argparse.ArgumentParser(description="Fine tune a Trained PPO Agent")
+    parser.add_argument("--checkpoint", type=str, required=True, help="Path to the trained module checkpoint")
+    args = parser.parse_args()
+
+    fine_tune(
+        path=args.checkpoint
+    )
