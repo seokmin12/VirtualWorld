@@ -1,0 +1,29 @@
+episode,timestep,total_mined,balance,age,day,end_reason
+0,73,17,850,20,3,Health depleted
+1,27,6,300,20,1,Happiness depleted
+2,46,11,550,20,1,Health depleted
+3,50,9,450,20,2,Health depleted
+4,200,17,850,20,8,Health depleted
+5,81,10,500,20,3,Health depleted
+6,250,20,1000,20,10,Happiness depleted
+7,33,5,250,20,1,Happiness depleted
+8,50,13,650,20,2,Health depleted
+9,48,4,200,20,1,Happiness depleted
+10,53,9,450,20,2,Happiness depleted
+11,48,7,350,20,1,Happiness depleted
+12,1026,81,4050,20,42,Happiness depleted
+13,174,10,500,20,7,Happiness depleted
+14,944,40,2000,20,39,Health depleted
+15,1007,19,950,20,41,Health depleted
+16,48539,1299,64950,25,2022,Happiness depleted
+17,486983,10129,506450,75,20290,Happiness depleted
+18,228,11,550,20,9,Health depleted
+19,700800,12320,616000,99,29199,Max episode length reached
+20,700800,9410,470500,99,29199,Max episode length reached
+21,37,9,450,20,1,Happiness depleted
+22,71,12,600,20,2,Happiness depleted
+23,84,16,800,20,3,Health depleted
+24,700800,7129,356450,99,29199,Max episode length reached
+25,700800,3495,174750,99,29199,Max episode length reached
+26,26,13,650,20,1,Happiness depleted
+27,700800,1966,98300,99,29199,Max episode length reached

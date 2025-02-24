@@ -1,0 +1,668 @@
+current logging run number : 3
+logging at : PPO_logs/PPO_3/timestep_log.csv
+
+save checkpoint path : PPO_preTrained/PPO_3.pth
+
+------------------------------------------------------------------------------------------
+max training timesteps : 700800
+log frequency : 20 timesteps
+------------------------------------------------------------------------------------------
+state space dimension : 8
+action space dimension : 4
+------------------------------------------------------------------------------------------
+Initializing a discrete action space policy
+------------------------------------------------------------------------------------------
+PPO update frequency : 1401600 timesteps
+PPO K epochs : 10
+PPO epsilon clip : 0.2
+discount factor (gamma) : 0.999
+------------------------------------------------------------------------------------------
+optimizer learning rate actor/critic : 0.0003
+------------------------------------------------------------------------------------------
+setting random seed to 2048
+------------------------------------------------------------------------------------------
+
+
+Episode 1 Summary:
+Episode Reward: 129.54
+
+Character Status:
+Age: 20 years
+Survival Time: 3 days
+Health: 0.00/100
+Happiness: 0.94/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 17
+Total Traded: 0
+Final Balance: $850.00
+
+Episode ended due to: Health depleted
+Current Time: Day 3
+Current Timestep: 73
+------------------------------------------------------------------------------------------
+
+
+Episode 2 Summary:
+Episode Reward: 41.69
+
+Character Status:
+Age: 20 years
+Survival Time: 1 days
+Health: 100.00/100
+Happiness: 0.04/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 6
+Total Traded: 0
+Final Balance: $300.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 1
+Current Timestep: 27
+------------------------------------------------------------------------------------------
+
+
+Episode 3 Summary:
+Episode Reward: 77.63
+
+Character Status:
+Age: 20 years
+Survival Time: 1 days
+Health: -6.00/100
+Happiness: 0.99/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 11
+Total Traded: 0
+Final Balance: $550.00
+
+Episode ended due to: Health depleted
+Current Time: Day 1
+Current Timestep: 46
+------------------------------------------------------------------------------------------
+
+
+Episode 4 Summary:
+Episode Reward: 78.00
+
+Character Status:
+Age: 20 years
+Survival Time: 2 days
+Health: 0.00/100
+Happiness: 0.88/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 9
+Total Traded: 0
+Final Balance: $450.00
+
+Episode ended due to: Health depleted
+Current Time: Day 2
+Current Timestep: 50
+------------------------------------------------------------------------------------------
+
+
+Episode 5 Summary:
+Episode Reward: 327.34
+
+Character Status:
+Age: 20 years
+Survival Time: 8 days
+Health: -6.00/100
+Happiness: 0.99/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 17
+Total Traded: 0
+Final Balance: $850.00
+
+Episode ended due to: Health depleted
+Current Time: Day 8
+Current Timestep: 200
+------------------------------------------------------------------------------------------
+
+
+Episode 6 Summary:
+Episode Reward: 140.88
+
+Character Status:
+Age: 20 years
+Survival Time: 3 days
+Health: -2.00/100
+Happiness: 0.99/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 10
+Total Traded: 0
+Final Balance: $500.00
+
+Episode ended due to: Health depleted
+Current Time: Day 3
+Current Timestep: 81
+------------------------------------------------------------------------------------------
+
+
+Episode 7 Summary:
+Episode Reward: 441.17
+
+Character Status:
+Age: 20 years
+Survival Time: 10 days
+Health: 100.00/100
+Happiness: 0.00/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 20
+Total Traded: 0
+Final Balance: $1000.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 10
+Current Timestep: 250
+------------------------------------------------------------------------------------------
+
+
+Episode 8 Summary:
+Episode Reward: 55.99
+
+Character Status:
+Age: 20 years
+Survival Time: 1 days
+Health: 100.00/100
+Happiness: 0.04/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 5
+Total Traded: 0
+Final Balance: $250.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 1
+Current Timestep: 33
+------------------------------------------------------------------------------------------
+
+
+Episode 9 Summary:
+Episode Reward: 86.12
+
+Character Status:
+Age: 20 years
+Survival Time: 2 days
+Health: 0.00/100
+Happiness: 0.99/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 13
+Total Traded: 0
+Final Balance: $650.00
+
+Episode ended due to: Health depleted
+Current Time: Day 2
+Current Timestep: 50
+------------------------------------------------------------------------------------------
+
+
+Episode 10 Summary:
+Episode Reward: 75.21
+
+Character Status:
+Age: 20 years
+Survival Time: 1 days
+Health: 98.00/100
+Happiness: 0.01/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 4
+Total Traded: 0
+Final Balance: $200.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 1
+Current Timestep: 48
+------------------------------------------------------------------------------------------
+
+
+Episode 11 Summary:
+Episode Reward: 90.33
+
+Character Status:
+Age: 20 years
+Survival Time: 2 days
+Health: 100.00/100
+Happiness: 0.02/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 9
+Total Traded: 0
+Final Balance: $450.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 2
+Current Timestep: 53
+------------------------------------------------------------------------------------------
+
+
+Episode 12 Summary:
+Episode Reward: 82.29
+
+Character Status:
+Age: 20 years
+Survival Time: 1 days
+Health: 100.00/100
+Happiness: 0.01/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 7
+Total Traded: 0
+Final Balance: $350.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 1
+Current Timestep: 48
+------------------------------------------------------------------------------------------
+
+
+Episode 13 Summary:
+Episode Reward: 1774.61
+
+Character Status:
+Age: 20 years
+Survival Time: 42 days
+Health: 95.00/100
+Happiness: 0.02/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 81
+Total Traded: 0
+Final Balance: $4050.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 42
+Current Timestep: 1026
+------------------------------------------------------------------------------------------
+
+
+Episode 14 Summary:
+Episode Reward: 291.19
+
+Character Status:
+Age: 20 years
+Survival Time: 7 days
+Health: 100.00/100
+Happiness: 0.00/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 10
+Total Traded: 0
+Final Balance: $500.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 7
+Current Timestep: 174
+------------------------------------------------------------------------------------------
+
+
+Episode 15 Summary:
+Episode Reward: 1714.51
+
+Character Status:
+Age: 20 years
+Survival Time: 39 days
+Health: -4.00/100
+Happiness: 0.99/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 40
+Total Traded: 0
+Final Balance: $2000.00
+
+Episode ended due to: Health depleted
+Current Time: Day 39
+Current Timestep: 944
+------------------------------------------------------------------------------------------
+
+
+Episode 16 Summary:
+Episode Reward: 1884.87
+
+Character Status:
+Age: 20 years
+Survival Time: 41 days
+Health: 0.00/100
+Happiness: 0.99/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 19
+Total Traded: 0
+Final Balance: $950.00
+
+Episode ended due to: Health depleted
+Current Time: Day 41
+Current Timestep: 1007
+------------------------------------------------------------------------------------------
+
+
+Episode 17 Summary:
+Episode Reward: 94843.59
+
+Character Status:
+Age: 25 years
+Survival Time: 2022 days
+Health: 100.00/100
+Happiness: 0.00/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 1299
+Total Traded: 0
+Final Balance: $64950.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 2022
+Current Timestep: 48539
+------------------------------------------------------------------------------------------
+
+
+Episode 18 Summary:
+Episode Reward: 970792.42
+
+Character Status:
+Age: 75 years
+Survival Time: 20290 days
+Health: 100.00/100
+Happiness: 0.03/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 10129
+Total Traded: 0
+Final Balance: $506450.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 20290
+Current Timestep: 486983
+------------------------------------------------------------------------------------------
+
+
+Episode 19 Summary:
+Episode Reward: 407.13
+
+Character Status:
+Age: 20 years
+Survival Time: 9 days
+Health: -3.00/100
+Happiness: 0.99/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 11
+Total Traded: 0
+Final Balance: $550.00
+
+Episode ended due to: Health depleted
+Current Time: Day 9
+Current Timestep: 228
+------------------------------------------------------------------------------------------
+
+
+Episode 20 Summary:
+Episode Reward: 1419594.27
+
+Character Status:
+Age: 99 years
+Survival Time: 29199 days
+Health: 100.00/100
+Happiness: 0.94/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 12320
+Total Traded: 0
+Final Balance: $616000.00
+
+Episode ended due to: Max episode length reached
+Current Time: Day 29199
+Current Timestep: 700800
+------------------------------------------------------------------------------------------
+
+
+Episode 21 Summary:
+Episode Reward: 1438826.04
+
+Character Status:
+Age: 99 years
+Survival Time: 29199 days
+Health: 98.00/100
+Happiness: 0.99/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 9410
+Total Traded: 0
+Final Balance: $470500.00
+
+Episode ended due to: Max episode length reached
+Current Time: Day 29199
+Current Timestep: 700800
+------------------------------------------------------------------------------------------
+
+
+Episode 22 Summary:
+Episode Reward: 57.25
+
+Character Status:
+Age: 20 years
+Survival Time: 1 days
+Health: 97.00/100
+Happiness: 0.00/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 9
+Total Traded: 0
+Final Balance: $450.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 1
+Current Timestep: 37
+------------------------------------------------------------------------------------------
+
+
+Episode 23 Summary:
+Episode Reward: 101.42
+
+Character Status:
+Age: 20 years
+Survival Time: 2 days
+Health: 65.00/100
+Happiness: 0.03/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 12
+Total Traded: 0
+Final Balance: $600.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 2
+Current Timestep: 71
+------------------------------------------------------------------------------------------
+
+
+Episode 24 Summary:
+Episode Reward: 148.97
+
+Character Status:
+Age: 20 years
+Survival Time: 3 days
+Health: 0.00/100
+Happiness: 0.87/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 16
+Total Traded: 0
+Final Balance: $800.00
+
+Episode ended due to: Health depleted
+Current Time: Day 3
+Current Timestep: 84
+------------------------------------------------------------------------------------------
+
+
+Episode 25 Summary:
+Episode Reward: 1456841.94
+
+Character Status:
+Age: 99 years
+Survival Time: 29199 days
+Health: 94.00/100
+Happiness: 0.99/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 7129
+Total Traded: 0
+Final Balance: $356450.00
+
+Episode ended due to: Max episode length reached
+Current Time: Day 29199
+Current Timestep: 700800
+------------------------------------------------------------------------------------------
+
+
+Episode 26 Summary:
+Episode Reward: 1475697.88
+
+Character Status:
+Age: 99 years
+Survival Time: 29199 days
+Health: 100.00/100
+Happiness: 0.92/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 3495
+Total Traded: 0
+Final Balance: $174750.00
+
+Episode ended due to: Max episode length reached
+Current Time: Day 29199
+Current Timestep: 700800
+------------------------------------------------------------------------------------------
+
+
+Episode 27 Summary:
+Episode Reward: 39.00
+
+Character Status:
+Age: 20 years
+Survival Time: 1 days
+Health: 59.00/100
+Happiness: 0.02/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 13
+Total Traded: 0
+Final Balance: $650.00
+
+Episode ended due to: Happiness depleted
+Current Time: Day 1
+Current Timestep: 26
+------------------------------------------------------------------------------------------
+
+
+Episode 28 Summary:
+Episode Reward: 1482123.04
+
+Character Status:
+Age: 99 years
+Survival Time: 29199 days
+Health: 91.00/100
+Happiness: 0.99/1.0
+Current Condition: high
+
+Skills & Attributes:Mining Power: 10.00
+
+Achievements:
+Total Mined: 1966
+Total Traded: 0
+Final Balance: $98300.00
+
+Episode ended due to: Max episode length reached
+Current Time: Day 29199
+Current Timestep: 700800
+------------------------------------------------------------------------------------------
+
