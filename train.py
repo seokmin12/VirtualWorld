@@ -1,5 +1,3 @@
-from simulator.SimulatorEnv import Env
-from simulator.MultiEntityEnv import MultipleEntityEnv
 import torch
 import os
 import numpy as np
@@ -89,6 +87,7 @@ def logging(summary_log_f, state_dim, action_dim):
 
 def train():
     from agents.ppo import DeepPPOAgent
+    from simulator.SimulatorEnv import Env
     env = Env()
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.n
@@ -224,7 +223,8 @@ def train():
 
 def train_multi_entity(num_entities: int):
     from agents.ppo2 import DeepPPOAgent
-    env = MultipleEntityEnv(num_entities)
+    from simulator.MultiEntityEnv import MultiEntityEnv
+    env = MultiEntityEnv(num_entities)
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.n
 
