@@ -1,27 +1,18 @@
 from simulator.SimulatorEnv import Env
-from simulator.MultipleEntityEnv import MultipleEntityEnv
-from agents.ppo import DeepPPOAgent
+from simulator.MultiEntityEnv import MultipleEntityEnv
 import torch
 import os
 import numpy as np
 from datetime import datetime
 from utils.logger import Logger
 from tqdm import tqdm
+import argparse
 
 """initialize environment hyperparameters"""
-has_continuous_action_space = False
-
-max_timesteps_len = 100 * 365 * 24  # total steps per episode: 100years * 365days * 24hours
+max_timesteps_len = 80 * 365 * 24 + 1  # total steps per episode: 80years * 365days * 24hours + 1hour
 episode = 2000
 
-print_freq = 4  # print avg reward in the interval (in num timesteps)
 log_freq = 20  # log avg reward in the interval (in num timesteps)
-save_model_freq = 20  # save module frequency (in num timesteps)
-
-action_std = 0.6  # starting std for action distribution (for continuous case)
-action_std_decay_rate = 0.05  # linearly decay action_std
-min_action_std = 0.1  # minimum action_std
-action_std_decay_freq = int(2.5e5)  # action_std decay frequency
 
 """PPO hyperparameters"""
 # Note: ppo_config keys have been updated to match the new DeepPPOAgent's arguments.
@@ -38,14 +29,14 @@ ppo_config = {
     'max_grad_norm': 0.5
 }
 
-random_seed = 0  # set random seed if required (0 = no random seed)
+random_seed = 2048  # set random seed if required (0 = no random seed)
 
 """logging"""
 log_dir = "PPO_logs"
 if not os.path.exists(log_dir):
     os.makedirs(log_dir)
 # get number of log files in the log directory
-current_num_files = next(os.walk(log_dir))[2]
+current_num_files = next(os.walk(log_dir))[1]
 run_num = len(current_num_files)
 
 log_num_dir = log_dir + f'/PPO_{str(run_num)}'
@@ -67,7 +58,7 @@ directory = "PPO_preTrained"
 if not os.path.exists(directory):
     os.makedirs(directory)
 
-checkpoint_path = directory + "/PPO_{}_{}.pth".format(random_seed, run_num)
+checkpoint_path = directory + "/PPO_{}.pt".format(run_num)
 summary_log_f.info(f"save checkpoint path : {checkpoint_path}\n")
 
 
@@ -75,27 +66,12 @@ def logging(summary_log_f, state_dim, action_dim):
     summary_log_f.info(
         f"{'-' * 90}\n"
         f"max training timesteps : {max_timesteps_len}\n"
-        f"model saving frequency : {str(save_model_freq)} timesteps\n"
         f"log frequency : {str(log_freq)} timesteps\n"
-        f"printing average reward over episodes in last : {str(print_freq)} timesteps\n"
         f"{'-' * 90}\n"
         f"state space dimension : {state_dim}\n"
         f"action space dimension : {action_dim}\n"
         f"{'-' * 90}\n"
-    )
-
-    if has_continuous_action_space:
-        summary_log_f.info(
-            "Initializing a continuous action space policy\n"
-            f"{'-' * 90}\n"
-            f"starting std of action distribution : {action_std}\n"
-            f"decay rate of std of action distribution : {action_std_decay_rate}\n"
-            f"minimum std of action distribution : {min_action_std}\n"
-            f"decay frequency of action distribution : {str(action_std_decay_freq)} timesteps\n"
-        )
-    else:
-        summary_log_f.info("Initializing a discrete action space policy\n")
-    summary_log_f.info(
+        "Initializing a discrete action space policy\n"
         f"{'-' * 90}\n"
         f"PPO update frequency : {str(max_timesteps_len * 2)} timesteps\n"
         f"PPO K epochs : {ppo_config['n_epochs']}\n"
@@ -103,18 +79,16 @@ def logging(summary_log_f, state_dim, action_dim):
         f"discount factor (gamma) : {ppo_config['gamma']}\n"
         f"{'-' * 90}\n"
         f"optimizer learning rate actor/critic : {ppo_config['lr']}\n"
+        f"{'-' * 90}\n"
+        f"setting random seed to {random_seed}\n"
+        f"{'-' * 90}\n"
     )
-    if random_seed:
-        summary_log_f.info(
-            f"{'-' * 90}\n"
-            f"setting random seed to {random_seed}\n"
-        )
-        torch.manual_seed(random_seed)
-        np.random.seed(random_seed)
-    summary_log_f.info(f"{'-' * 90}\n")
+    torch.manual_seed(random_seed)
+    np.random.seed(random_seed)
 
 
 def train():
+    from agents.ppo import DeepPPOAgent
     env = Env()
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.n
@@ -248,15 +222,15 @@ def train():
     print("============================================================================================")
 
 
-def train_multi_entity():
-    env = MultipleEntityEnv()
-    num_entities = len(env.entities)
+def train_multi_entity(num_entities: int):
+    from agents.ppo2 import DeepPPOAgent
+    env = MultipleEntityEnv(num_entities)
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.n
 
     logging(summary_log_f, state_dim, action_dim)
 
-    agents = [DeepPPOAgent(state_dim, action_dim, **ppo_config) for _ in range(num_entities)]
+    agents = [DeepPPOAgent(state_dim, action_dim, num_entities=1, **ppo_config) for _ in range(num_entities)]
 
     # Open log files before starting the episodes loop
     timestep_log_f = open(timestep_log_f_name, "w+")
@@ -282,7 +256,9 @@ def train_multi_entity():
         time_step = 0
         terminated_flags = [False] * num_entities
 
-        while not all(terminated_flags) and time_step < max_timesteps_len:
+        for _ in tqdm(range(max_timesteps_len), desc=f"Episode {i_episode + 1}", leave=False):
+            if all(terminated_flags):
+                break
             actions = []
             # For each agent, select its action if not yet terminated.
             for idx, agent in enumerate(agents):
@@ -317,6 +293,7 @@ def train_multi_entity():
                     timestep_log_f.write('{},{},{},{}\n'.format(i_episode, idx, time_step, log_avg_reward))
                 timestep_log_f.flush()
 
+        agents_checkpoint = {}
         for idx, agent in enumerate(agents):
             agent.update(
                 buffers[idx]['states'],
@@ -327,8 +304,6 @@ def train_multi_entity():
                 buffers[idx]['old_log_probs'],
                 buffers[idx]['old_values']
             )
-            agent_checkpoint = os.path.join(directory, "PPO_{}_{}_agent{}.pth".format(random_seed, run_num, idx))
-            agent.save(agent_checkpoint)
 
             last_info = infos[idx]
             end_reason = (
@@ -341,9 +316,9 @@ def train_multi_entity():
                 i_episode,
                 idx,
                 time_step,
-                0,  # total_mined; adjust as needed
+                last_info['total_mined'],
                 last_info['balance'],
-                0,  # age; adjust if available
+                last_info['age'],
                 last_info['current_day'],
                 end_reason
             ))
@@ -359,8 +334,17 @@ def train_multi_entity():
                 f"Episode Reward: {episode_rewards[idx]:.2f}\n"
                 f"End Reason: {end_reason}"
             )
+
+            if hasattr(agent, 'actor'):
+                agents_checkpoint[f'agent_{idx}_actor'] = agent.actor.state_dict()
+            if hasattr(agent, 'critic'):
+                agents_checkpoint[f'agent_{idx}_critic'] = agent.critic.state_dict()
+
+        checkpoint_filename = os.path.join(directory,
+                                           "PPO_{}_entity{}.pt".format(run_num, num_entities))
+        torch.save(agents_checkpoint, checkpoint_filename)
         summary_log_f.info(
-            f"{'=' * 50}"
+            f"{'=' * 50}\n"
         )
 
     # Close log files after all episodes are finished.
@@ -379,5 +363,12 @@ def train_multi_entity():
 
 
 if __name__ == "__main__":
-    # train()
-    train_multi_entity()
+    parser = argparse.ArgumentParser(description="Train a PPO Agent")
+    parser.add_argument("--env", type=str, required=True, default="single", help="Select env single or multi")
+    parser.add_argument("--num_entities", type=int, default=1, help="Num of entities")
+    args = parser.parse_args()
+
+    if args.env == "single":
+        train()
+    else:
+        train_multi_entity(args.num_entities)
