@@ -15,6 +15,13 @@
     <br>
     <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=ffffff">
     <img src="https://img.shields.io/badge/pytorch-EE4C2C?style=for-the-badge&logo=python&logoColor=ffffff">
+    <br>
+    <a href="./README.md">
+        <img alt="README in English" src="https://img.shields.io/badge/English-d9d9d9">
+    </a>
+    <a href="./README_KR.md">
+        <img alt="README in Korean" src="https://img.shields.io/badge/한국어-d9d9d9">
+    </a>
 </div>
 
 <!-- TABLE OF CONTENTS -->
