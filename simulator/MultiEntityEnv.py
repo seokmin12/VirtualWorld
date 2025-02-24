@@ -5,10 +5,10 @@ from module.Bank import Bank
 from module.Entity import Entity
 
 
-class MultipleEntityEnv(gym.Env):
-    def __init__(self):
+class MultiEntityEnv(gym.Env):
+    def __init__(self, num_entities):
         self.bank = Bank()
-        self.entities = [Entity(f"entity{i}", self.bank) for i in range(2)]
+        self.entities = [Entity(f"entity{i}", self.bank) for i in range(num_entities)]
         self.action_space = gym.spaces.Discrete(5)  # mine, rest, leisure, religious_activity, trade
         self.observation_space = gym.spaces.Box(
             low=0.0, high=1.0, shape=(8,), dtype=np.float32
@@ -37,7 +37,7 @@ class MultipleEntityEnv(gym.Env):
             reward: float = 0.0
             if entity.current_hour >= 24:
                 if entity.work_hours > 12:
-                    entity.health -= 10
+                    entity.health = max(0.0, entity.health - 10)
                 entity.current_day += 1
                 if entity.current_day % 365 == 0:
                     entity.age += 1
@@ -53,8 +53,8 @@ class MultipleEntityEnv(gym.Env):
             elif action == 3:
                 reward += entity.religious_activity()
             elif action == 4:
+                other_entity = random.choice([e for e in self.entities if e != entity and len(self.entities) > 1])
                 trade_amount = round(random.uniform(0.0, entity.account.balance), 0)
-                other_entity = random.choice([e for e in self.entities if e != entity])
                 reward += entity.trade(other_entity, trade_amount)
             else:
                 reward -= 1.0
@@ -81,7 +81,9 @@ class MultipleEntityEnv(gym.Env):
                 "work_hours": entity.work_hours,
                 "health": entity.health,
                 "balance": entity.account.balance,
-                "happiness": entity.happiness
+                "happiness": entity.happiness,
+                "age": entity.age,
+                "total_mined": entity.total_mined
             })
 
         return states, rewards, dones, infos
